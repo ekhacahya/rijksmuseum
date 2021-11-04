@@ -7,6 +7,7 @@ import com.skydoves.sandwich.suspendOnSuccess
 import dev.ecbn.rijksmuseum.data.model.Art
 import dev.ecbn.rijksmuseum.data.remote.ArtApiService
 import dev.ecbn.rijksmuseum.data.remote.Response
+import java.net.UnknownHostException
 
 /**
  * Created by Eka Cahya Nugraha on 02/11/21.
@@ -30,7 +31,11 @@ class ArtRepository constructor(
                 response.onError(this.toString())
             }
             .suspendOnException {
-                response.onError(message.toString())
+                if (this.exception is UnknownHostException){
+                    response.onError("No internet connection!")
+                }else{
+                    response.onError(message.toString())
+                }
             }
     }
 }

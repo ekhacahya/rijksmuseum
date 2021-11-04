@@ -8,6 +8,7 @@ import com.skydoves.sandwich.message
 import com.skydoves.sandwich.operators.ApiResponseSuspendOperator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.net.UnknownHostException
 
 /**
  * Created by Eka Cahya Nugraha on 03/11/21.
@@ -31,7 +32,11 @@ class GlobalResponseOperator<T> constructor(
     override suspend fun onException(apiResponse: ApiResponse.Failure.Exception<T>) =
         withContext(Dispatchers.Main) {
             apiResponse.run {
-                toast(message())
+                if (this.exception is UnknownHostException){
+                    toast("No internet connection!")
+                }else{
+                    toast(message())
+                }
             }
         }
 
