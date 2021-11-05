@@ -21,17 +21,17 @@ class HomeViewModel(
     val artViewState: LiveData<ArtViewState> = _artViewState
 
     fun fetchArtCollections(){
-        _artViewState.value = ArtViewState.Loading(true)
+        _artViewState.postValue(ArtViewState.Loading(true))
         viewModelScope.launch {
             artRepo.getArtCollections(object : Response<List<Art>> {
                 override fun onSuccess(data: List<Art>) {
-                    _artViewState.value = ArtViewState.Success(data)
-                    _artViewState.value = ArtViewState.Loading(false)
+                    _artViewState.postValue(ArtViewState.Success(data))
+                    _artViewState.postValue(ArtViewState.Loading(false))
                 }
 
                 override fun onError(message: String) {
-                    _artViewState.value = ArtViewState.Error(message)
-                    _artViewState.value = ArtViewState.Loading(false)
+                    _artViewState.postValue(ArtViewState.Error(message))
+                    _artViewState.postValue(ArtViewState.Loading(false))
                 }
 
             })
